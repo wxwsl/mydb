@@ -10,9 +10,18 @@
  *
  * Learn more at https://developers.cloudflare.com/workers/
  */
+declare namespace Cloudflare {
+	interface Env {
+			MY_VARIABLE: "shrimp_value";
+			MY_KV:KVNamespace;
+	}
+}
 
 export default {
 	async fetch(request, env, ctx): Promise<Response> {
+		console.log(env.MY_VARIABLE)
+		await env.MY_KV.put("test","llii")
+		console.log(await env.MY_KV.get("test"))
 		return new Response('Hello World!');
 	},
 } satisfies ExportedHandler<Env>;
