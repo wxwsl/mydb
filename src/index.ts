@@ -1,3 +1,5 @@
+import { DurableObject } from "cloudflare:workers";
+
 /**
  * Welcome to Cloudflare Workers! This is your first worker.
  *
@@ -14,6 +16,7 @@ declare namespace Cloudflare {
 	interface Env {
 			MY_VARIABLE: "shrimp_value";
 			MY_KV:KVNamespace;
+			DB:D1Database;
 	}
 }
 
@@ -22,6 +25,9 @@ export default {
 		console.log(env.MY_VARIABLE)
 		await env.MY_KV.put("test","llii")
 		console.log(await env.MY_KV.get("test"))
+        const { results } = await env.DB.prepare(
+            "SELECT * FROM Customers"
+        ).all();
 		return new Response('Hello World!');
 	},
 } satisfies ExportedHandler<Env>;
