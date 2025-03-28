@@ -12,6 +12,11 @@ export default {
 		console.log(env.MY_VARIABLE)
 		await env.MY_KV.put("test","llii")
 		console.log(await env.MY_KV.get("test"))
+		 // 插入数据示例
+		const insertStmt = await env.DB.prepare(
+					"INSERT INTO Customers (CompanyName) VALUES (?)"
+		).bind("测试公司");
+		await insertStmt.run();
         const { results } = await env.DB.prepare(
             "SELECT * FROM Customers"
         ).all();
